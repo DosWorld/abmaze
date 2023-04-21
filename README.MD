@@ -13,6 +13,8 @@ In this case, odd cells will be wall of maze.
    to the spanning tree.
 3. Repeat step 2 until all cells have been visited.
 
+![Screenshot: maze generation](https://github.com/DosWorld/abmaze/blob/master/ABMAZE.PNG?raw=true)
+
 ## Alorithm positive side
 
 1. Too hard implement maze-solver (maze has a good random-level)
