@@ -5,11 +5,11 @@ Here is algorithm implementation (with visualization) in Pascal language.
 I am implement few my small idea:
 
 `abmaze.pas` visit cells with even (x,y) only. In this case, odd cells will
-be wall of maze.
+be wall of maze. Also, i am not try to visit 100% of cells. IMHO, 50% is enough.
 
 `abmaze2.pas` +disable make steps to visided cells during walk thru unvisided.
 
-`abmaze3.pas` +"teleport" when stuck.
+`abmaze3.pas` +teleport when stuck (instead start random walk by visited cells).
 
 ## Origian algorithm description
 

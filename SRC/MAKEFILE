@@ -1,0 +1,20 @@
+all: ABMAZE.EXE ABMAZE2.EXE ABMAZE3.EXE ABMAZE4.EXE
+install: all
+        COPY *.EXE ..\
+
+ABMAZE.EXE: ABMAZE.PAS
+        tpc ABMAZE.PAS
+
+ABMAZE2.EXE: ABMAZE2.PAS
+        tpc ABMAZE2.PAS
+
+ABMAZE3.EXE: ABMAZE3.PAS
+        tpc ABMAZE3.PAS
+
+ABMAZE4.EXE: ABMAZE4.PAS
+        tpc ABMAZE4.PAS
+
+clean:
+        DEL *.EXE
+        DEL *.BAK
+
