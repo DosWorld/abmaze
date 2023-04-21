@@ -20,6 +20,7 @@ Alorithm negative side:
 
 https://weblog.jamisbuck.org/2011/1/17/maze-generation-aldous-broder-algorithm
 https://www.youtube.com/watch?v=-EZwuFdkJes
+https://github.com/DosWorld/abmaze/
 
 I am implement my small idea: visit points with even (x,y) only.
 In this case, odd cells will be wall of maze.
