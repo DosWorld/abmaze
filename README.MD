@@ -11,6 +11,8 @@ be wall of maze. Also, i am not try to visit 100% of cells. IMHO, 50% is enough.
 
 `abmaze3.pas` +teleport when stuck (instead start random walk by visited cells).
 
+`abmaze4.pas` +random step length
+
 ## Original algorithm description
 
 1. Choose a cell. Any cell.
