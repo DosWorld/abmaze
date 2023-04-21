@@ -1,11 +1,17 @@
 # Aldous-Broder algorithm for maze generation.
 
-Here is algorithm implementation in Pascal language.
+Here is algorithm implementation (with visualization) in Pascal language.
 
-I am implement my small idea: visit points with even (x,y) only.
-In this case, odd cells will be wall of maze.
+I am implement few my small idea:
 
-## Description
+`abmaze.pas` visit cells with even (x,y) only. In this case, odd cells will
+be wall of maze.
+
+`abmaze2.pas` +disable make steps to visided cells during walk thru unvisided.
+
+`abmaze3.pas` +"teleport" when stuck.
+
+## Origian algorithm description
 
 1. Choose a cell. Any cell.
 2. Choose a connected neighbor of the cell and travel to it.
@@ -13,15 +19,17 @@ In this case, odd cells will be wall of maze.
    to the spanning tree.
 3. Repeat step 2 until all cells have been visited.
 
+## Screenshot
+
 ![Screenshot: maze generation](https://github.com/DosWorld/abmaze/blob/master/ABMAZE.PNG?raw=true)
 
-## Alorithm positive side
+## Alorithm positive points
 
 1. Too hard implement maze-solver (maze has a good random-level)
 2. No visible artifacts
 3. Simple implementation
 
-## Alorithm negative side
+## Alorithm negative points
 
 1. Speed
 2. Impossible generate infinity mazes

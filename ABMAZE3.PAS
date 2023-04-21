@@ -1,44 +1,5 @@
 (*****************************************************************************
-# Aldous-Broder algorithm for maze generation.
-
-Here is algorithm implementation (with visualization) in Pascal language.
-
-I am implement few my small idea:
-
-`abmaze.pas` visit cells with even (x,y) only. In this case, odd cells will
-be wall of maze.
-
-`abmaze2.pas` +disable make steps to visided cells during walk thru unvisided.
-
-`abmaze3.pas` +"teleport" when stuck.
-
-## Origian algorithm description
-
-1. Choose a cell. Any cell.
-2. Choose a connected neighbor of the cell and travel to it.
-   If the neighbor has not yet been visited, add the traveled edge
-   to the spanning tree.
-3. Repeat step 2 until all cells have been visited.
-
-## Screenshot
-
-![Screenshot: maze generation](https://github.com/DosWorld/abmaze/blob/master/ABMAZE.PNG?raw=true)
-
-## Alorithm positive points
-
-1. Too hard implement maze-solver (maze has a good random-level)
-2. No visible artifacts
-3. Simple implementation
-
-## Alorithm negative points
-
-1. Speed
-2. Impossible generate infinity mazes
-3. Speed became too slow (more and more) at end process
-
-https://weblog.jamisbuck.org/2011/1/17/maze-generation-aldous-broder-algorithm
-
-https://www.youtube.com/watch?v=-EZwuFdkJes
+Light modified Aldous-Broder algorithm for maze generation.
 
 https://github.com/DosWorld/abmaze/
 
@@ -63,7 +24,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 *****************************************************************************)
-PROGRAM ABMaze;
+PROGRAM ABMaze2;
 
 CONST
 CELL_VISITED = ' '; (* cell is visited *)
@@ -108,13 +69,40 @@ BEGIN
         CheckBounds := (x >= 0) AND (x <= WIDTH) AND (y >= 0) AND (y <= HEIGHT);
 END;
 
+FUNCTION CalcNeib(x, y : INTEGER) : INTEGER;
+VAR     r : INTEGER;
+BEGIN
+        r := 0;
+        IF (x - STEP) >= 0 THEN IF maze[y][x - STEP] = CELL_UNVISIT THEN INC(r);
+        IF (x + STEP) <= WIDTH THEN IF maze[y][x + STEP] = CELL_UNVISIT THEN INC(r);
+        IF (y - STEP) >= 0 THEN IF maze[y - STEP][x] = CELL_UNVISIT THEN INC(r);
+        IF (y + STEP) <= HEIGHT THEN IF maze[y + STEP][x] = CELL_UNVISIT THEN INC(r);
+        CalcNeib := r;
+END;
+
+PROCEDURE Teleport(VAR x, y : INTEGER);
+VAR     i, j : INTEGER;
+BEGIN
+        WHILE TRUE DO BEGIN
+                j := Random((WIDTH + 1) SHR 1) SHL 1;
+                i := Random((HEIGHT + 1) SHR 1) SHL 1;
+                IF (maze[i][j] = CELL_VISITED) AND (CalcNeib(j, i) > 1) THEN BEGIN
+                        y := i;
+                        x := j;
+                        EXIT;
+                END;
+        END;
+END;
+
 PROCEDURE GenerateMaze;
 VAR     x , y, dx, dy, d : INTEGER;
         unvisited, total : INTEGER;
         isUnVis          : BOOLEAN;
         enough           : INTEGER;
+        canStepToVis     : BOOLEAN;
 BEGIN
         total := (WIDTH * HEIGHT) SHR 1;
+        canStepToVis := FALSE;
 
         (* Initial point *)
         x := Random((WIDTH + 1) SHR 1) SHL 1;
@@ -133,17 +121,27 @@ BEGIN
                 3: BEGIN dx := -1; dy := 0;  END; (* LEFT *)
                 END;
                 IF NOT CheckBounds(x + dx * STEP, y + dy * STEP) THEN CONTINUE;
+                IF NOT canStepToVis THEN BEGIN
+                        canStepToVis := CalcNeib(x, y) = 0;
+                        IF CalcNeib(x, y) = 0 THEN BEGIN
+                                Teleport(x, y);
+                                canStepToVis := FALSE;
+                                CONTINUE;
+                        END;
+                END;
                 isUnVis := maze[y + dy * STEP][x + dx * STEP] = CELL_UNVISIT;
+                IF (NOT canStepToVis) AND (NOT isUnVis) THEN CONTINUE;
                 FOR d := 1 TO STEP DO BEGIN
                         INC(x, dx);
                         INC(y, dy);
                         IF isUnVis THEN maze[y][x] := CELL_VISITED;
                 END;
                 IF isUnVis THEN DEC(unvisited);
+                IF isUnVis THEN canStepToVis := FALSE;
                 (* Visualization *)
                 Write(CHR(27), '[0;0H'); (* Cursor to position 0:0 *)
                 Write(CHR(27), '[3',CHR($35),'m');
-                Writeln('ALDOUS-BRODER MAZE');
+                Writeln('ALDOUS-BRODER MAZE (modified)');
                 Write(CHR(27), '[3',CHR($36),'m');
                 WriteLn(unvisited, '/', enough, ':', total
                         , ', x: ', x
