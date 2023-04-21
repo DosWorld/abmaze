@@ -31,12 +31,11 @@ CELL_VISITED = ' '; (* cell is visited *)
 CELL_UNVISIT = '#'; (* cell is not visited *)
 
 (* maze dimension *)
-WIDTH  = 70;
+WIDTH  = 76;
 HEIGHT = 20;
 STEP   = 2;
 
-VAR
-maze : ARRAY[0..HEIGHT, 0..WIDTH] OF CHAR;
+VAR     maze : ARRAY[0..HEIGHT, 0..WIDTH] OF CHAR;
 
 PROCEDURE ClearMaze;
 BEGIN
@@ -44,8 +43,7 @@ BEGIN
 END;
 
 PROCEDURE WriteMaze(xs, ys : INTEGER);
-VAR
-        x, y : INTEGER;
+VAR     x, y : INTEGER;
 BEGIN
         Write('+');
         FOR x := 0 TO WIDTH DO Write('-');
@@ -81,11 +79,12 @@ BEGIN
 END;
 
 PROCEDURE GenerateMaze;
-VAR     x , y, dx, dy, d : INTEGER;
+VAR     x, y, dx, dy, i  : INTEGER;
         unvisited, total : INTEGER;
         isUnVis          : BOOLEAN;
         enough           : INTEGER;
         canStepToVis     : BOOLEAN;
+        d                : CHAR;
 BEGIN
         total := (WIDTH * HEIGHT) SHR 1;
         canStepToVis := FALSE;
@@ -99,18 +98,17 @@ BEGIN
         enough := 5 * total DIV 10; (* enough visit 50% of maze *)
         WHILE unvisited > enough DO BEGIN
                 (* One step *)
-                d := Random(4);
-                CASE d OF
-                0: BEGIN dx := 0;  dy := -1; END; (* UP *)
-                1: BEGIN dx := 1;  dy := 0;  END; (* RIGHT *)
-                2: BEGIN dx := 0;  dy := 1;  END; (* DOWN *)
-                3: BEGIN dx := -1; dy := 0;  END; (* LEFT *)
+                CASE Random(4) OF
+                0: BEGIN dx := 0;  dy := -1; d := '^'; END; (* UP *)
+                1: BEGIN dx := 1;  dy := 0;  d := '>'; END; (* RIGHT *)
+                2: BEGIN dx := 0;  dy := 1;  d := 'V'; END; (* DOWN *)
+                3: BEGIN dx := -1; dy := 0;  d := '<'; END; (* LEFT *)
                 END;
                 IF NOT CheckBounds(x + dx * STEP, y + dy * STEP) THEN CONTINUE;
                 IF NOT canStepToVis THEN canStepToVis := CalcNeib(x, y) = 0;
                 isUnVis := maze[y + dy * STEP][x + dx * STEP] = CELL_UNVISIT;
                 IF (NOT canStepToVis) AND (NOT isUnVis) THEN CONTINUE;
-                FOR d := 1 TO STEP DO BEGIN
+                FOR i := 1 TO STEP DO BEGIN
                         INC(x, dx);
                         INC(y, dy);
                         IF isUnVis THEN maze[y][x] := CELL_VISITED;
@@ -123,9 +121,9 @@ BEGIN
                 Writeln('ALDOUS-BRODER MAZE (modified)');
                 Write(CHR(27), '[3',CHR($36),'m');
                 WriteLn(unvisited, '/', enough, ':', total
-                        , ', x: ', x
-                        , ', y: ', y
-                        , ', direction: ', d
+                        , CHR(9), 'x:', x:4
+                        , CHR(9), 'y:', y:4
+                        , CHR(9), 'direction: ', d
                         , '   ');
                 Write(CHR(27), '[3',CHR($37),'m');
                 WriteMaze(x, y);
