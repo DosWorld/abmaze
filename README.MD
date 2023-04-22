@@ -1,49 +1,70 @@
 # Aldous-Broder algorithm for maze generation.
 
 Here is algorithm implementation (with visualization) in Pascal language.
+It could be compiled with Free Pascal and Turbo Pascal. Used only two
+"non-standard" functions: `Randomize` and `Random`.
 
-I am implement few my small idea:
+For visualization, used output
+[ANSI-terminal escape codes](https://en.wikipedia.org/wiki/ANSI_escape_code),
+so it must works in DOS, Linux, MAC and Windows. (i am not yet check last two).
 
-`abmaze.pas` visit cells with even (x,y) only. In this case, odd cells will
-be wall of maze. Also, i am not try to visit 100% of cells. IMHO, 50% is enough.
+Has been implemented few small idea:
 
-`abmaze2.pas` +disable make steps to visided cells during walk thru unvisided.
+`abmaze.pas` visit cells with even coord (x,y) only. In this case, cells with
+odd coord will be wall of maze. Also, i am not try to visit 100% of cells.
+IMHO, 50% is enough (we have enough of maze and the rest 50% will consume
+too mach time). This version is more near to original algorithm.
 
-`abmaze3.pas` +teleport when stuck (instead start random walk by visited cells).
+`abmaze2.pas` as prev, +disable make steps to visided cells during walk
+thru unvisided.
 
-`abmaze4.pas` +random step length
+`abmaze3.pas` as prev, +"teleport" when stuck (instead start random walk
+by visited cells).
 
-## Original algorithm description
+`abmaze4.pas` as prev, +random step length
 
-1. Choose a cell. Any cell.
-2. Choose a connected neighbor of the cell and travel to it.
-   If the neighbor has not yet been visited, add the traveled edge
-   to the spanning tree.
-3. Repeat step 2 until all cells have been visited.
+Modifications `abmaze3.pas` and `abmaze4.pas` increase speed. So, make review
+`abmaze.pas` as clean implementation and then try `abmaze3.pas` and
+`abmaze4.pas`. IMHO, these modifications make it possible to use the
+algorithm on computers of the IBM AT 286 class.
 
 ## Screenshot
 
-![Screenshot: maze generation](https://github.com/DosWorld/abmaze/blob/master/ABMAZE.PNG?raw=true)
+Here is screenshot visualization:
+![Screenshot: Maze generation](https://github.com/DosWorld/abmaze/blob/master/ABMAZE.PNG?raw=true)
 
-## Alorithm positive points
+## Original algorithm description
+
+1. Choose any random cell. (it will be a start point)
+2. Choose a connected neighbor of the cell and travel to it. If the this
+neighbor has not yet been visited, make path between this two cells.
+3. Repeat step 2 until all cells have been visited. (I am made limit to 50%)
+
+### Alorithm positive points
 
 1. Too hard implement maze-solver (maze has a good random-level)
-2. No visible artifacts
+2. No visible artifacts or patterns (like Sidewinder algorithm etc)
 3. Simple implementation
 
-## Alorithm negative points
+### Alorithm negative points
 
-1. Speed
+1. Speed. Speed became too slow more and more, at end process. (I am try
+to fix it in my modifications)
 2. Impossible generate infinity mazes
-3. Speed became too slow (more and more) at end process
+
+## Links
 
 https://weblog.jamisbuck.org/2011/1/17/maze-generation-aldous-broder-algorithm
 
-https://www.youtube.com/watch?v=-EZwuFdkJes
+[![Maze generation with Aldous-Broder algorithm](http://img.youtube.com/vi/-EZwuFdkJes/0.jpg)](http://www.youtube.com/watch?v=-EZwuFdkJes "Maze generation with Aldous-Broder algorithm")
 
 https://github.com/DosWorld/abmaze/
 
+https://en.wikipedia.org/wiki/Maze_generation_algorithm
+
+https://github.com/topics/aldous-broder
+
 ## License
 
-MIT-0 (See LICENSE.TXT)
+MIT-0 (See LICENSE.TXT). Free as wind and sky.
 
