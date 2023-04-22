@@ -1,8 +1,9 @@
 # Aldous-Broder algorithm for maze generation.
 
 Here is algorithm implementation (with visualization) in Pascal language.
-It could be compiled with Free Pascal and Turbo Pascal. Used only two
-"non-standard" functions: `Randomize` and `Random`.
+It could be compiled with Free Pascal and Turbo Pascal. Used only three
+"non-standard" functions: `Randomize`, `Random` and `FillChar` (the same
+as `memset` in C).
 
 For visualization, used output
 [ANSI-terminal escape codes](https://en.wikipedia.org/wiki/ANSI_escape_code),
@@ -23,6 +24,8 @@ by visited cells).
 
 `abmaze4.pas` as prev, +random step length
 
+IMHO, start from `abmaze2.pas` was changed behavior and this is not equalent.
+
 Modifications `abmaze3.pas` and `abmaze4.pas` increase speed. So, make review
 `abmaze.pas` as clean implementation and then try `abmaze3.pas` and
 `abmaze4.pas`. IMHO, these modifications make it possible to use the
@@ -30,7 +33,7 @@ algorithm on computers of the IBM AT 286 class.
 
 ## Screenshot
 
-Here is screenshot visualization:
+Here is visualization screenshot:
 ![Screenshot: Maze generation](https://github.com/DosWorld/abmaze/blob/master/ABMAZE.PNG?raw=true)
 
 ## Original algorithm description
@@ -55,14 +58,15 @@ to fix it in my modifications)
 ## Links
 
 https://weblog.jamisbuck.org/2011/1/17/maze-generation-aldous-broder-algorithm
+(article with good description, pictures and example in python)
 
 [![Maze generation with Aldous-Broder algorithm](http://img.youtube.com/vi/-EZwuFdkJes/0.jpg)](http://www.youtube.com/watch?v=-EZwuFdkJes "Maze generation with Aldous-Broder algorithm")
 
-https://github.com/DosWorld/abmaze/
+https://github.com/DosWorld/abmaze/ (this repository)
 
-https://en.wikipedia.org/wiki/Maze_generation_algorithm
+https://en.wikipedia.org/wiki/Maze_generation_algorithm (general overview)
 
-https://github.com/topics/aldous-broder
+https://github.com/topics/aldous-broder (other implementations)
 
 ## License
 
